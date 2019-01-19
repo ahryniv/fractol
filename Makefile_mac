@@ -1,0 +1,42 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: ahryniv <marvin@42.fr>                     +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2017/03/28 20:46:31 by ahryniv           #+#    #+#              #
+#    Updated: 2017/03/28 20:57:18 by ahryniv          ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+WWW = -Wall -Wextra -Werror
+
+NAME = fractol
+
+OBJECTS = main.o config.o draw.o keys.o mandelbrot.o julia.o ship.o
+
+LIBFT = ./libft/libft.a
+
+FRAME = -lmlx -framework OpenGL -framework AppKit
+
+all: $(LIBFT) $(NAME)
+
+$(LIBFT):
+	make -C ./libft/
+
+$(NAME): $(OBJECTS)
+	cc -o $(NAME) $(OBJECTS) $(LIBFT) $(FRAME)
+
+%.o: ./%c
+	gcc $(WWW) -o $@ -c $< -I header_fract.h
+
+clean:
+	make clean -C./libft/
+	rm -f main.o config.o draw.o keys.o mandelbrot.o julia.o ship.o
+ 
+fclean: clean
+	make fclean -C ./libft/
+	rm -f $(NAME)
+
+re: fclean all
